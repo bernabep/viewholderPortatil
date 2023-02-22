@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">viewHolder</string>
+    <string name="title_recipes">Recetas</string>
+</resources>

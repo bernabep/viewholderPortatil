@@ -117,9 +117,6 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-/*    fun deleteRecipe(position:Int){
-        query.ref.database.reference.child()
-    }*/
 }
 
 

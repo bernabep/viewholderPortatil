@@ -6,41 +6,38 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     tools:context=".MainActivity">
-
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_min"
         android:textColor="@color/white"
-        style="?attr/textAppearanceHeadline1"
+        android:gravity="center"
+        style="?attr/textAppearanceHeadline4"
         android:text="@string/title_recipes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    
+<FrameLayout
+    android:id="@+id/hostFragment"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginHorizontal="@dimen/default_min"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tvTitle"
+    app:layout_constraintBottom_toTopOf="@id/btNavegation"
+    />
+    
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/btNavegation"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/green"
-        android:padding="@dimen/default_min"
-        tools:listitem="@layout/item_receta"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        app:layout_constraintBottom_toTopOf="@id/recyclerviewFirebase"
-        />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerviewFirebase"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="@dimen/default_min"
-        android:background="@color/grey"
-        tools:listitem="@layout/item_receta"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerview"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_nav_menu"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

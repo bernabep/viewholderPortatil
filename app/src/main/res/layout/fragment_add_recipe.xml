@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:padding="@dimen/default_min">
+
+    <ImageView
+        android:id="@+id/imgPhoto"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintDimensionRatio="H,4:3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/bnAdd"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/ic_baseline_add_photo_alternate_24"
+        app:layout_constraintBottom_toBottomOf="@id/imgPhoto"
+        app:layout_constraintEnd_toEndOf="@id/imgPhoto"
+        app:layout_constraintStart_toStartOf="@id/imgPhoto"
+        app:layout_constraintTop_toTopOf="@id/imgPhoto" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilTitle"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/backgroundSecond"
+        android:layout_marginTop="@dimen/default_min"
+        android:hint="Titulo"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/imgPhoto"
+        app:layout_constraintStart_toStartOf="@id/imgPhoto"
+        app:layout_constraintTop_toBottomOf="@id/imgPhoto">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etTitle"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilIngredient"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:background="@color/backgroundSecond"
+        android:textColorHint="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/default_min"
+        android:hint="@string/ingredients"
+        app:layout_constraintEnd_toEndOf="@id/imgPhoto"
+        app:layout_constraintStart_toStartOf="@id/imgPhoto"
+        app:layout_constraintTop_toBottomOf="@id/tilTitle"
+        app:layout_constraintBottom_toTopOf="@id/btSend">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etIngredient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:maxLines="3"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/send"
+        android:layout_marginTop="@dimen/default_min"
+        app:layout_constraintTop_toBottomOf="@id/tilIngredient"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/imgPhoto"
+        app:layout_constraintStart_toStartOf="@id/imgPhoto" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

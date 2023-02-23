@@ -1,4 +1,4 @@
-package com.example.viewholder
+package com.example.viewholder.Ui
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.viewholder.Database.getRecipes
+import com.example.viewholder.Model.Recipe
+import com.example.viewholder.R
+import com.example.viewholder.RecipesAdapter
 import com.example.viewholder.databinding.ActivityMainBinding
 import com.example.viewholder.databinding.ItemRecetaBinding
 import com.firebase.ui.database.FirebaseRecyclerAdapter

@@ -1,6 +1,6 @@
 package com.example.viewholder
 
-import android.view.autofill.AutofillId
+import com.example.viewholder.Model.Recipe
 
 object Database {
 fun deleteRecipes(id:Int,lista:MutableList<Recipe>){

@@ -13,10 +13,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [fragmentAddRecipe.newInstance] factory method to
+ * Use the [fragmenAddRecipe.newInstance] factory method to
  * create an instance of this fragment.
  */
-class fragmentAddRecipe : Fragment() {
+class fragmenAddRecipe : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -34,7 +34,7 @@ class fragmentAddRecipe : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recipes, container, false)
+        return inflater.inflate(R.layout.fragment_add_recipe, container, false)
     }
 
     companion object {
@@ -44,12 +44,12 @@ class fragmentAddRecipe : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment fragmentAddRecipe.
+         * @return A new instance of fragment fragmenAddRecipe.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            fragmentAddRecipe().apply {
+            fragmenAddRecipe().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

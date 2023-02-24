@@ -1,4 +1,4 @@
-package com.example.viewholder
+package com.example.viewholder.Adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.viewholder.Model.Recipe
+import com.example.viewholder.R
 import com.example.viewholder.databinding.ItemRecetaBinding
 
 class RecipesAdapter(var recipes:MutableList<Recipe>): RecyclerView.Adapter<RecipesAdapter.ViewHolderRecipes>() {

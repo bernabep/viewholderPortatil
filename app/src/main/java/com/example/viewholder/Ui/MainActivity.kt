@@ -3,121 +3,83 @@ package com.example.viewholder.Ui
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.viewholder.Database.getRecipes
-import com.example.viewholder.Model.Recipe
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.viewholder.R
-import com.example.viewholder.RecipesAdapter
 import com.example.viewholder.databinding.ActivityMainBinding
-import com.example.viewholder.databinding.ItemRecetaBinding
-import com.firebase.ui.database.FirebaseRecyclerAdapter
-import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.Query
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
-    private lateinit var mAdapter: RecipesAdapter
-    private lateinit var mLayoutManager: LayoutManager
     private lateinit var mContext: Context
-    private lateinit var mContextFirebase: Context
-    private lateinit var mAdapterFirebase: FirebaseRecyclerAdapter<Recipe, ViewHolderFirebase>
-    private lateinit var mLayoutManagerFirebase: LinearLayoutManager
-    private lateinit var query: Query
+    private lateinit var fragmentManager: FragmentManager
+    private lateinit var mActiveFragment: Fragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
         mContext = this
-        var mRecipes = getRecipes()
 
-        mAdapter = RecipesAdapter(mRecipes)
-        mLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        mLayoutManagerFirebase = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        mBinding.recyclerview.apply {
-            setHasFixedSize(true)
-            adapter = mAdapter
-            layoutManager = mLayoutManager
-        }
+        setupNavigationButton()
 
-        query = FirebaseDatabase.getInstance().reference.child("Recipe")
 
-        var option =
-            FirebaseRecyclerOptions.Builder<Recipe>().setQuery(query, Recipe::class.java).build()
+    }
 
-        mAdapterFirebase =
-            object : FirebaseRecyclerAdapter<Recipe, ViewHolderFirebase>(option) {
-                override fun onCreateViewHolder(
-                    parent: ViewGroup,
-                    viewType: Int
-                ): ViewHolderFirebase {
-                    mContextFirebase = parent.context
-                    var view = layoutInflater.inflate(R.layout.item_receta, parent, false)
+    private fun setupNavigationButton() {
+        fragmentManager = supportFragmentManager
+        var mFragmentListRecipe = ListRecipe()
+        var mFragmentAddRecipe = AddRecipe()
+        var mFragmentConfigRecipe = ConfigRecipe()
 
-                    return ViewHolderFirebase(view)
+        mActiveFragment = mFragmentListRecipe
+
+        fragmentManager.beginTransaction()
+            .add(R.id.hostFragment, mFragmentConfigRecipe, ConfigRecipe::class.java.name)
+            .hide(mFragmentConfigRecipe)
+            .commit()
+
+        fragmentManager.beginTransaction()
+            .add(R.id.hostFragment, mFragmentAddRecipe, mFragmentAddRecipe::class.java.name)
+            .hide(mFragmentAddRecipe)
+            .commit()
+
+        fragmentManager.beginTransaction()
+            .add(R.id.hostFragment, mFragmentListRecipe, ListRecipe::class.java.name)
+            .commit()
+
+
+        mBinding.btNavegation.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.home -> {
+                    fragmentManager.beginTransaction()
+                        .hide(mActiveFragment)
+                        .show(mFragmentListRecipe)
+                        .commit()
+                    mActiveFragment = mFragmentListRecipe
+                    true
                 }
-
-                override fun onBindViewHolder(
-                    holder: ViewHolderFirebase,
-                    position: Int,
-                    model: Recipe
-                ) {
-                    var recipe = getItem(position)
-
-                    with(holder) {
-                        var recipeKey =
-                            FirebaseDatabase.getInstance().getReference().child("Recipe")
-                                .child(model.id.toString())
-                        bindingFirebase.tvTitle.text = recipe.name
-                        bindingFirebase.tvIngredient.text = recipe.concatIngredient()
-                        Glide.with(mContextFirebase)
-                            .load(recipe.urlPhoto)
-                            .centerCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .into(bindingFirebase.imPhoto)
-                    }
-                    
-                    holder.bindingFirebase.root.setOnClickListener {
-                        getRef(position).removeValue()
-                        mBinding.recyclerviewFirebase.adapter = mAdapterFirebase
-                    }
+                R.id.add -> {
+                    fragmentManager.beginTransaction()
+                        .hide(mActiveFragment)
+                        .show(mFragmentAddRecipe)
+                        .commit()
+                    mActiveFragment = mFragmentAddRecipe
+                    true
 
                 }
-
-                override fun onDataChanged() {
-                    super.onDataChanged()
-                    query = FirebaseDatabase.getInstance().reference.child("Recipe")
+                R.id.option -> {
+                    fragmentManager.beginTransaction()
+                        .hide(mActiveFragment)
+                        .show(mFragmentConfigRecipe)
+                        .commit()
+                    mActiveFragment = mFragmentConfigRecipe
+                    true
+                }
+                else -> {
+                    false
                 }
             }
-
-        mBinding.recyclerviewFirebase.apply {
-            setHasFixedSize(true)
-            adapter = mAdapterFirebase
-            layoutManager = mLayoutManagerFirebase
-        }
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        mAdapterFirebase.startListening()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mAdapterFirebase.stopListening()
-    }
-
-    class ViewHolderFirebase(view: View) : RecyclerView.ViewHolder(view) {
-        var bindingFirebase = ItemRecetaBinding.bind(view)
-
-
+       }
     }
 }
 

@@ -1,9 +1,7 @@
 package com.example.viewholder.Model
 
-import android.view.autofill.AutofillId
-
 class Recipe(
-    var id:Int? = null,
+    var id: String? = null,
     var name:String = "",
     var ingredient:MutableList<String> = mutableListOf(),
     var urlPhoto:String = ""

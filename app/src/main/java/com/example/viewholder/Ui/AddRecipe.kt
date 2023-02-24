@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.viewholder.Model.Recipe
 import com.example.viewholder.databinding.FragmentAddRecipeBinding
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 
@@ -23,7 +25,7 @@ class AddRecipe : Fragment() {
     private val PATH_STORAGE = "imageRecipe"
     private val PATH_DATABASE = "Recipe"
     private lateinit var mBinding: FragmentAddRecipeBinding
-
+    private lateinit var mFirebaseDatabase: DatabaseReference
     private var photoSelect: Uri? = null
 
 
@@ -49,6 +51,7 @@ class AddRecipe : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mFirebaseDatabase = FirebaseDatabase.getInstance().reference.child(PATH_DATABASE)
         mBinding.bnAdd.setOnClickListener {
             openGalery()
         }
@@ -59,30 +62,42 @@ class AddRecipe : Fragment() {
     }
 
     private fun uploadRecipe() {
-
+        var key = mFirebaseDatabase.push().key
         var title = mBinding.etTitle.text.toString().trim()
         var url = ""
         var ingredient: MutableList<String> =
             mBinding.etIngredient.text.toString().trim().split(",").toMutableList()
         var storageReference = FirebaseStorage.getInstance().reference.child("$PATH_STORAGE/$title")
 
-        photoSelect?.let {
-            storageReference.putFile(it).addOnSuccessListener {
-                it.storage.downloadUrl.addOnSuccessListener {
-                    url = it.toString()
-                    var firebaseDatabase =
-                        FirebaseDatabase.getInstance().reference.child(PATH_DATABASE)
-                    var key = firebaseDatabase.push().key
-                    firebaseDatabase.push().setValue(Recipe(id = key, title, ingredient, url))
-                        .addOnSuccessListener {
-
+        photoSelect?.let { it ->
+            storageReference.putFile(it)
+                .addOnSuccessListener {
+                    it.storage.downloadUrl.addOnSuccessListener {
+                        url = it.toString()
+                        if (key != null) {
+                            saveRecipe(key, url, title, ingredient)
+                        } else {
+                            Toast.makeText(context,
+                                "Key de Farebase no obtenida",
+                                Toast.LENGTH_LONG)
+                                .show()
                         }
-
+                    }
                 }
-            }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(context,"Error $exception",Toast.LENGTH_LONG).show()
+                }
         }
+    }
 
-
+    private fun saveRecipe(
+        key: String,
+        url: String,
+        title: String,
+        ingredient: MutableList<String>,
+    ) {
+        val recipe = Recipe(key, title, ingredient, url)
+        mFirebaseDatabase.push().setValue(recipe)
     }
 
     private fun openGalery() {
